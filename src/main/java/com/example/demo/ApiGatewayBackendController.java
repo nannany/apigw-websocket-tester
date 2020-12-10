@@ -13,7 +13,7 @@ public class ApiGatewayBackendController {
   @PostMapping("connect")
   public ConnectionInfo connect(@RequestBody String str){
     logger.info(str);
-    return null;
+    return new ConnectionInfo("111connection222");
   }
 
 }

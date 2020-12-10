@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class TestController {
   private final Logger logger = LoggerFactory.getLogger(TestController.class);
 
