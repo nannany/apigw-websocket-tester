@@ -1,5 +1,6 @@
-package com.example.demo;
+package com.example.demo.configuration;
 
+import com.example.demo.request.Connection;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

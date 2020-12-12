@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConnectionInfo {
-
-  private String connectionId;
-
+public class Ack {
+  private String messageId;
 }

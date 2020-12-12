@@ -1,5 +1,8 @@
-package com.example.demo;
+package com.example.demo.controller;
 
+import com.example.demo.request.ConnectRequest;
+import com.example.demo.request.Connection;
+import com.example.demo.response.ConnectionInfo;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

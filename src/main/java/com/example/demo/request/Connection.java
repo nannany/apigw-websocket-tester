@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.request;
 
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.AllArgsConstructor;
