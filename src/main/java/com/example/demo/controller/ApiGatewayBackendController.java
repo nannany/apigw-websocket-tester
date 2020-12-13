@@ -1,22 +1,13 @@
 package com.example.demo.controller;
 
-import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
-import com.amazonaws.services.apigatewaymanagementapi.AmazonApiGatewayManagementApiAsync;
-import com.amazonaws.services.apigatewaymanagementapi.AmazonApiGatewayManagementApiAsyncClientBuilder;
-import com.amazonaws.services.apigatewaymanagementapi.model.PostToConnectionRequest;
-import com.amazonaws.services.apigatewaymanagementapi.model.PostToConnectionResult;
 import com.example.demo.request.ConnectRequest;
 import com.example.demo.request.Connection;
 import com.example.demo.response.ConnectAck;
 import com.example.demo.response.ConnectionInfo;
-import com.example.demo.response.Message;
-import com.google.gson.Gson;
-import java.nio.ByteBuffer;
+import com.example.demo.util.ApiGatewayPublishUtil;
 import java.util.Map;
-import java.util.concurrent.Future;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,9 +18,12 @@ public class ApiGatewayBackendController {
   private final Logger logger = LoggerFactory.getLogger(ApiGatewayBackendController.class);
 
   private Connection connection;
+  private ApiGatewayPublishUtil apiGatewayPublishUtil;
 
-  public ApiGatewayBackendController(Connection connection) {
+  public ApiGatewayBackendController(Connection connection,
+      ApiGatewayPublishUtil apiGatewayPublishUtil) {
     this.connection = connection;
+    this.apiGatewayPublishUtil = apiGatewayPublishUtil;
   }
 
   @PostMapping("connect")
@@ -39,31 +33,11 @@ public class ApiGatewayBackendController {
     logger.info(cr.toString());
     logger.info(map.toString());
 
-    asyncRequest(cr);
+    apiGatewayPublishUtil.asyncRequest(cr.getConnectionId(), cr.getDomainName());
 
     return new ConnectAck("200");
   }
 
-
-  @Async
-  Future<PostToConnectionResult> asyncRequest(ConnectRequest cr) {
-    EndpointConfiguration ec = new EndpointConfiguration(
-        "https://qh8poob9gf.execute-api.ap-northeast-1.amazonaws.com/Prod",
-        "ap-northeast-1");
-    AmazonApiGatewayManagementApiAsync client = AmazonApiGatewayManagementApiAsyncClientBuilder
-        .standard()
-        .withEndpointConfiguration(ec)
-        .build();
-    Message message = new Message(cr.getConnectionId());
-    Gson gson = new Gson();
-    String dataStr = gson.toJson(message);
-    ByteBuffer data = ByteBuffer.wrap(dataStr.getBytes());
-
-    PostToConnectionRequest postToConnectionRequest = new PostToConnectionRequest()
-        .withConnectionId(cr.getConnectionId()).withData(data);
-
-    return client.postToConnectionAsync(postToConnectionRequest);
-  }
 
   @PostMapping("disconnect")
   public ConnectionInfo disconnect(@RequestBody ConnectRequest cr) {
