@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.response.ConnectAck;
 import com.example.demo.request.ConnectRequest;
 import com.example.demo.request.Connection;
 import com.example.demo.response.ConnectionInfo;
@@ -21,20 +22,21 @@ public class ApiGatewayBackendController {
   }
 
   @PostMapping("connect")
-  public ConnectionInfo connect(@RequestBody ConnectRequest cr){
+  public ConnectAck connect(@RequestBody ConnectRequest cr) throws Exception {
     Map<String,String> map = connection.getConnectionMap();
     map.put(cr.getConnectionId(), "1");
     logger.info(cr.toString());
     logger.info(map.toString());
 
-    return new ConnectionInfo(cr.getConnectionId());
+    return new ConnectAck("200");
+//    throw new Exception();
   }
 
   @PostMapping("disconnect")
   public ConnectionInfo disconnect(@RequestBody ConnectRequest cr){
-    Map<String,String> map = connection.getConnectionMap();
-    map.put(cr.getConnectionId(), "1");
     logger.info(cr.toString());
+    Map<String,String> map = connection.getConnectionMap();
+    map.remove(cr.getConnectionId());
     logger.info(map.toString());
 
     return new ConnectionInfo(cr.getConnectionId());

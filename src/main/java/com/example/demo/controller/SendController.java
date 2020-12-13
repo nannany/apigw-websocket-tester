@@ -6,9 +6,8 @@ import com.amazonaws.services.apigatewaymanagementapi.AmazonApiGatewayManagement
 import com.amazonaws.services.apigatewaymanagementapi.model.PostToConnectionRequest;
 import com.example.demo.request.ConnectRequest;
 import com.example.demo.response.Ack;
-import com.example.demo.response.Test;
+import com.example.demo.response.Message;
 import com.google.gson.Gson;
-import com.squareup.okhttp.MediaType;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import org.slf4j.Logger;
@@ -20,13 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class SendController {
 
   private final Logger logger = LoggerFactory.getLogger(SendController.class);
-  public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-  private final String url =
-      "https://qh8poob9gf.execute-api.ap-northeast-1.amazonaws.com/Prod/@connections/";
 
   @PostMapping("send")
   public Ack send(@org.springframework.web.bind.annotation.RequestBody ConnectRequest cr)
       throws IOException {
+    logger.info(cr.toString());
 
     EndpointConfiguration ec = new EndpointConfiguration(
         "https://qh8poob9gf.execute-api.ap-northeast-1.amazonaws.com/Prod",
@@ -35,9 +32,9 @@ public class SendController {
         .withEndpointConfiguration(ec)
         .build();
 
-    Test test = new Test("test");
+    Message message = new Message(cr.getBody());
     Gson gson = new Gson();
-    String dataStr = gson.toJson(test);
+    String dataStr = gson.toJson(message);
     ByteBuffer data = ByteBuffer.wrap(dataStr.getBytes());
 
     PostToConnectionRequest postToConnectionRequest = new PostToConnectionRequest()
