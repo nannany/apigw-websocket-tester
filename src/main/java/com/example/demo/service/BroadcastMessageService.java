@@ -42,10 +42,7 @@ public class BroadcastMessageService {
     String dataStr = gson.toJson(message);
     ByteBuffer data = ByteBuffer.wrap(dataStr.getBytes());
 
-    List<String> connectionIds = new ArrayList<>(connection.getConnectionMap().keySet());
-
-    connectionIds.forEach(connectionId -> {
-          logger.info("★★"+ connectionId);
+    connection.getConnectionMap().keySet().forEach(connectionId -> {
           PostToConnectionRequest postToConnectionRequest = new PostToConnectionRequest()
               .withConnectionId(connectionId).withData(data);
           client.postToConnectionAsync(postToConnectionRequest);
