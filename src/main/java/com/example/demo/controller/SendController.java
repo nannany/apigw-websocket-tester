@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.request.ConnectRequest;
 import com.example.demo.response.Ack;
 import com.example.demo.util.ApiGatewayPublishUtil;
-import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;

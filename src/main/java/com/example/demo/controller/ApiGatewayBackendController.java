@@ -27,7 +27,7 @@ public class ApiGatewayBackendController {
   }
 
   @PostMapping("connect")
-  public ConnectAck connect(@RequestBody ConnectRequest cr) throws Exception {
+  public ConnectAck connect(@RequestBody ConnectRequest cr) {
     Map<String, String> map = connection.getConnectionMap();
     map.put(cr.getConnectionId(), "1");
     logger.info(cr.toString());
